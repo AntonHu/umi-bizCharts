@@ -6,12 +6,12 @@ import { extend, CancelToken } from 'umi-request';
 import { notification } from 'antd';
 
 export interface IResponse {
-  status: string | number
-  info: string
-  data: any
+  status: string | number;
+  info: string;
+  data: any;
 }
 
-const TIME_OUT = 60000; 
+const TIME_OUT = 60000;
 
 const CODE_MESSAGE = {
   200: '服务器成功返回请求的数据。',
@@ -36,7 +36,7 @@ const CODE_MESSAGE = {
  */
 const errorHandler = (error: { response: Response }): Response => {
   const { response } = error;
-  console.log(error)
+  console.log(error);
   if (response && response.status) {
     const errorText = CODE_MESSAGE[response.status] || response.statusText;
     const { status, url } = response;
@@ -67,17 +67,17 @@ const successHandler = (res: IResponse): IResponse => {
   } else {
     res.info = res.info || res.info || '未知错误';
     if (res.status == -999) {
-        //session过期
-        notification.error({
-          description: '您的登录状态已过期，请重新登录！',
-          message: '登录失效',
-        });
+      //session过期
+      notification.error({
+        description: '您的登录状态已过期，请重新登录！',
+        message: '登录失效',
+      });
     } else if (res.status == -9999) {
-        //无权限
-        notification.error({
-          description: '您没有权限查看！',
-          message: '无权限',
-        });
+      //无权限
+      notification.error({
+        description: '您没有权限查看！',
+        message: '无权限',
+      });
     }
     return res;
   }
@@ -94,21 +94,21 @@ const request = extend({
 
 // 请求拦截器
 request.interceptors.request.use((url, options) => {
-  return (
-    {
-      url: `${url}`,
-      options: { ...options },
-    }
-  );
-})
+  return {
+    url: `${url}`,
+    options: { ...options },
+  };
+});
 
 export const get = async (url: string, data: object = {}): Promise<IResponse> => {
   const result = await request(url, {
     method: 'GET',
     params: data,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+    },
   });
-  if ( result ) {
+  if (result) {
     return successHandler(result);
   } else {
     return result;
@@ -120,9 +120,11 @@ export const getText = async (url: string, data: object = {}): Promise<IResponse
     method: 'GET',
     params: data,
     responseType: 'text',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+    },
   });
-  if ( result ) {
+  if (result) {
     return successHandler(result);
   } else {
     return result;
@@ -135,7 +137,7 @@ export const post = async (url: string, data: object = {}): Promise<IResponse> =
     data: data,
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   });
-  if ( result ) {
+  if (result) {
     return successHandler(result);
   } else {
     return result;
@@ -148,7 +150,7 @@ export const jsonPost = async (url: string, data: object = {}): Promise<IRespons
     data: data,
     headers: { 'Content-Type': 'application/json' },
   });
-  if ( result ) {
+  if (result) {
     return successHandler(result);
   } else {
     return result;

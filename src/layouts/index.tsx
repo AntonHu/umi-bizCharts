@@ -16,7 +16,7 @@ import {
 import styles from './index.less';
 
 interface IProps {
-  uiStore: UIStore
+  uiStore: UIStore;
 }
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -73,21 +73,22 @@ class BasicLayout extends React.Component<IProps> {
           </Menu>
         </Sider>
         <Layout className="site-layout" style={{ marginLeft: 200 }}>
-          <Header className={styles.siteLayoutBackground} style={{ padding: 0 }} >
-            <div className={styles.headerTitle}>
-              { this.props.uiStore.navTitle }
-            </div>
+          <Header className={styles.siteLayoutBackground} style={{ padding: 0 }}>
+            <div className={styles.headerTitle}>{this.props.uiStore.navTitle}</div>
           </Header>
           <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-            <div className={styles.siteLayoutBackground} style={{ padding: 24, textAlign: 'center' }}>
-              { this.props.children }
+            <div
+              className={styles.siteLayoutBackground}
+              style={{ padding: 24, textAlign: 'center' }}
+            >
+              {this.props.children}
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
         </Layout>
       </Layout>
     );
-    return Loading({ifShow: uiStore.ifLoading, children: layoutDom});
+    return Loading({ ifShow: uiStore.ifLoading, children: layoutDom });
   }
 }
 
