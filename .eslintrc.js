@@ -4,12 +4,12 @@ module.exports = {
         node: true,
         es6: true
     },
-    parser: '@typescript-eslint/parser',
+    parser: '@typescript-eslint/parser', // 解析typescript，从而检查和规范Typescript代码
     extends: [
-        'plugin:react/recommended',
-        'plugin:@typescript-eslint/recommended',
-        'prettier/@typescript-eslint',
-        'plugin:prettier/recommended'
+        'plugin:react/recommended', // 检测和规范React代码
+        'plugin:@typescript-eslint/recommended', // 包含了各类定义好的检测Typescript代码的规范
+        'plugin:prettier/recommended', // 使ESLint会检测prettier的代码规范
+        'prettier/@typescript-eslint' // 使得@typescript-eslint中的样式规范失效，遵循prettier中的样式规范
     ],
     plugins: ['@typescript-eslint'],
     settings: {
@@ -32,6 +32,7 @@ module.exports = {
     rules: {
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/interface-name-prefix': 'off',
+        '@typescript-eslint/camelcase': 'off',
         semi: [1, 'always'], // 句末需要分号
         indent: [1, 4], // 缩进4个空格
         // "quotes": [1, "single"], // 请使用单引号

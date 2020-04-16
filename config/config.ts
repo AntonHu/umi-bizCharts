@@ -3,6 +3,8 @@ import routesConfig from './routes.config';
 
 const config = defineConfig({
     title: '四项指标系统',
+    hash: true, // css js 文件加hash
+    routes: routesConfig,
     autoprefixer: {
         browsers: ['> 1%', 'last 2 versions', 'not ie <= 10']
     },
@@ -15,9 +17,14 @@ const config = defineConfig({
         ie: 10
     },
     nodeModulesTransform: {
+        // 设置 node_modules 目录下依赖文件的编译方式
+        // none 只编译 es5-imcompatible-versions 里声明的依赖
         type: 'none'
     },
-    routes: routesConfig
+    dynamicImport: {
+        // 按需加载 以loading为初始页面
+        loading: '@/components/Loading'
+    }
 });
 
 export default config;

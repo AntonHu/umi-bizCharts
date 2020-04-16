@@ -26,7 +26,17 @@ const { Header, Content, Footer, Sider } = Layout;
 class BasicLayout extends React.Component<IProps> {
     render() {
         const { uiStore } = this.props;
-        const layoutDom = (
+        const layoutContentDom = (
+            <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+                <div
+                    className={styles.siteLayoutBackground}
+                    style={{ padding: 24, textAlign: 'center' }}
+                >
+                    {this.props.children}
+                </div>
+            </Content>
+        );
+        return (
             <Layout>
                 <Sider
                     style={{
@@ -77,12 +87,7 @@ class BasicLayout extends React.Component<IProps> {
                         <div className={styles.headerTitle}>{this.props.uiStore.navTitle}</div>
                     </Header>
                     <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-                        <div
-                            className={styles.siteLayoutBackground}
-                            style={{ padding: 24, textAlign: 'center' }}
-                        >
-                            {this.props.children}
-                        </div>
+                        {Loading({ ifShow: uiStore.ifLoading, children: layoutContentDom })}
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>
                         Ant Design ©2018 Created by Ant UED
@@ -90,7 +95,6 @@ class BasicLayout extends React.Component<IProps> {
                 </Layout>
             </Layout>
         );
-        return Loading({ ifShow: uiStore.ifLoading, children: layoutDom });
     }
 }
 

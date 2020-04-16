@@ -12,7 +12,6 @@ export default {
             BPPC_URL: 'https://ppst02.bppc.com.cn' //中油BP的域名
         }
     },
-    mock: false,
-    hash: true,
+    mock: false, // 关闭mock
     outputPath: './prodBuild'
 };

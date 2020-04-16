@@ -11,7 +11,7 @@ umi内置antd，如果样式与设计稿差别较大也可以自己封装组件
 #### 4. 开发语言：
 umi内置typescript、less、CSS Module
 #### 5. 其他：
-umi内置工具：eslint（风格检查）、prettier（保存时/git commit时根据eslint自动调整代码）、mock（模拟接口）
+umi内置工具：eslint（代码检查）、prettier（风格检查）、yorkie（获取git钩子）、mock（模拟接口）
 
 ## 启动项目
 #### 以下指令均视作你已 cd 到 项目根目录下
@@ -73,7 +73,7 @@ $ serve prodBuild
 ├── .eslintrc.js ------------- eslint规则
 ├── .gitignore --------------- git忽略配置
 ├── .prettierignore ---------- prettier忽略配置
-├── .prettierrc -------------- prettier规则 自动根据eslint调整代码
+├── .prettierrc -------------- prettier规则
 ├── package-lock.json -------- 依赖的缓存文件，锁定依赖版本等信息，加速依赖安装
 ├── package.json ------------- 项目配置，依赖配置
 ├── README.md ---------------- 项目介绍markdown

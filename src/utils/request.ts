@@ -13,7 +13,7 @@ export interface IResponse {
 
 const TIME_OUT = 60000;
 
-const CODE_MESSAGE = {
+const CODE_MESSAGE: Record<string, string> = {
     200: '服务器成功返回请求的数据。',
     201: '新建或修改数据成功。',
     202: '一个请求已经进入后台排队（异步任务）。',
@@ -32,14 +32,22 @@ const CODE_MESSAGE = {
 };
 
 /**
- * 异常处理程序
+ * 异常处理
+ * @param error umi-request 错误时返回的默认Response格式内容
  */
-const errorHandler = (error: { response: Response }): Response => {
+const errorHandler = (error: { response: Response }): IResponse => {
     const { response } = error;
+    const errResult = {
+        status: 233,
+        info: '网络异常',
+        data: null
+    };
     console.log(error);
     if (response && response.status) {
         const errorText = CODE_MESSAGE[response.status] || response.statusText;
         const { status, url } = response;
+        errResult.status = status;
+        errResult.info = errorText;
 
         notification.error({
             message: `请求错误 ${status}: ${url}`,
@@ -51,7 +59,7 @@ const errorHandler = (error: { response: Response }): Response => {
             message: '网络异常'
         });
     }
-    return response;
+    return errResult;
 };
 
 /**
@@ -62,24 +70,28 @@ const errorHandler = (error: { response: Response }): Response => {
  * @param reject
  */
 const successHandler = (res: IResponse): IResponse => {
-    if (res.status === 1) {
-        return res;
-    } else {
-        res.info = res.info || res.info || '未知错误';
-        if (res.status == -999) {
-            //session过期
-            notification.error({
-                description: '您的登录状态已过期，请重新登录！',
-                message: '登录失效'
-            });
-        } else if (res.status == -9999) {
-            //无权限
-            notification.error({
-                description: '您没有权限查看！',
-                message: '无权限'
-            });
+    try {
+        if (res.status === 1) {
+            return res;
+        } else {
+            res.info = res.info || res.info || '未知错误';
+            if (res.status == -999) {
+                //session过期
+                notification.error({
+                    description: '您的登录状态已过期，请重新登录！',
+                    message: '登录失效'
+                });
+            } else if (res.status == -9999) {
+                //无权限
+                notification.error({
+                    description: '您没有权限查看！',
+                    message: '无权限'
+                });
+            }
+            return res;
         }
-        return res;
+    } catch (e) {
+        return errorHandler(e);
     }
 };
 
@@ -101,7 +113,7 @@ request.interceptors.request.use((url, options) => {
 });
 
 export const get = async (url: string, data: object = {}): Promise<IResponse> => {
-    const result = await request(url, {
+    const result = await request('/weixin/xj/oilLowerPrice', {
         method: 'GET',
         params: data,
         headers: {
