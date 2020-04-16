@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "experimentalDecorators": true,
     "target": "esnext",
     "module": "esnext",

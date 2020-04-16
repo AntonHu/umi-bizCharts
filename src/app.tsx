@@ -11,12 +11,12 @@ import store from '@/store';
  * @param oldRender
  */
 export async function render(oldRender: Function) {
-  const isLogin = true;
-  if (isLogin) {
-    oldRender();
-  } else {
-    history.push('/');
-  }
+    const isLogin = true;
+    if (isLogin) {
+        oldRender();
+    } else {
+        history.push('/');
+    }
 }
 
 /**
@@ -25,7 +25,7 @@ export async function render(oldRender: Function) {
  * @param container
  */
 export function rootContainer(container: React.ReactNode) {
-  // 包装 mobx 的 Provider
-  const providerDom = <Provider {...store}>{container}</Provider>;
-  return providerDom;
+    // 包装 mobx 的 Provider
+    const providerDom = <Provider {...store}>{container}</Provider>;
+    return providerDom;
 }
