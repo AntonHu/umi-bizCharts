@@ -1,5 +1,5 @@
 export default {
-define: {
+  define: {
     APP_CONFIG: {
       APPID_QP: 'wx525c1aa33476c7d9', //壳牌华北小程序id
       APP_SERVICE: 'https://api-test.1kmxc.com/appservice/',
