@@ -8,11 +8,10 @@
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
-    "lint": "lint-staged",
     "test:coverage": "umi-test --coverage"
   },
   "gitHooks": {
-    "pre-commit": "lint-staged"
+    "pre-commit": "npm run prettier"
   },
   "lint-staged": {
     "*.{js,jsx,less,md,json}": [
