@@ -50,8 +50,9 @@ $ serve prodBuild
 ├── config ------------------- umi的配置文件
     ├── config.dev.ts -------- 测试环境配置
     ├── config.prod.ts ------- 生产环境配置
-    ├── config.ts ------------ 通用配置 
-    └── routes.config.ts ----- 路由配置
+    ├── config.ts ------------ 通用配置
+    ├── routes.config.ts ----- 路由配置
+    └── webpack.config.ts ---- 自定义的 webpack 配置
 ├── devBuild ----------------- 测试环境打包目录
 ├── prodBuild ---------------- 生产环境打包目录
 ├── mock --------------------- mock目录
@@ -87,28 +88,7 @@ $ serve prodBuild
 
 #### 1. 打包配置：
 
-Umi基于webpack封装，通过[config配置项](https://umijs.org/zh-CN/config)可以满足大部分基础需求，如果需要增加自定义的webpack配置，可以在 config 中增加 chainWebpack 配置：
-
-```ts
-// 示例config.js
-const config = defineConfig({
-    // 其他配置
-    ...,
-    // memo，当前 webpack-chain对象
-    // env，当前环境，development、production 或 test 等
-    // webpack，webpack 实例，用于获取其内部插件
-    // createCSSRule，用于扩展其他 CSS 实现，比如 sass, stylus
-    chainWebpack(memo, { env, webpack, createCSSRule }) {
-        // 设置 alias
-        memo.resolve.alias.set('foo', '/tmp/a/b/foo');
-
-        // 删除 umi 内置插件
-        memo.plugins.delete('progress');
-        memo.plugins.delete('friendly-error');
-        memo.plugins.delete('copy');
-    }
-});
-```
+Umi基于webpack封装，通过[config配置项](https://umijs.org/zh-CN/config)可以满足大部分基础需求，如果需要增加自定义的webpack配置，可以在 **config/webpack.config.ts** 中增加 chainWebpack 配置，写法请前往参考
 
 #### 2. 数据管理：
 本项目使用[Mobx](https://cn.mobx.js.org/)，双向绑定，没有繁琐的action type, dispatch流程，使用装饰器的形式，写法简洁清晰（Umi内置有dva插件，但是dva基于redux-saga使用繁琐，所以选择了Mobx）

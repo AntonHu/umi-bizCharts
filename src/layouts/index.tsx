@@ -1,7 +1,7 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import Loading from '@/components/Loading';
-import MenuItem from './components/MenuItem';
+import MenuList from './components/MenuList';
 import { UIStore } from '@/store/UI';
 import { Layout, Menu } from 'antd';
 import {
@@ -28,34 +28,42 @@ class BasicLayout extends React.Component<IProps> {
     state = {
         menuList: [
             {
+                key: '1',
                 icon: <UserOutlined />,
                 menuName: '我的'
             },
             {
+                key: '2',
                 icon: <VideoCameraOutlined />,
                 menuName: '历程'
             },
             {
+                key: '3',
                 icon: <UploadOutlined />,
                 menuName: '工单'
             },
             {
+                key: '4',
                 icon: <BarChartOutlined />,
                 menuName: '事件'
             },
             {
+                key: '5',
                 icon: <CloudOutlined />,
                 menuName: '咨询'
             },
             {
+                key: '6',
                 icon: <AppstoreOutlined />,
                 menuName: '对账'
             },
             {
+                key: '7',
                 icon: <TeamOutlined />,
                 menuName: '审批'
             },
             {
+                key: '8',
                 icon: <ShopOutlined />,
                 menuName: '绩效'
             }
@@ -94,11 +102,8 @@ class BasicLayout extends React.Component<IProps> {
                     }}
                 >
                     <div className={styles.logo} />
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
-                        {this.state.menuList.map(item => (
-                            <MenuItem key={item.menuName} icon={item.icon} menuName={item.menuName} />
-                        ))}
-                    </Menu>
+
+                    <MenuList menuList={this.state.menuList} />
                 </Sider>
                 <Layout className="site-layout" style={{ marginLeft: 200 }}>
                     {Loading({ ifShow: uiStore.ifLoading, children: layoutContentDom })}

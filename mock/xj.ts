@@ -6,6 +6,8 @@ import { mock } from 'mockjs';
  * @param time 响应延时ms
  */
 const resHandler = (data: any, time?: number) => (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5000');
+    res.setHeader('Access-Control-Allow-Credentials', true);
     setTimeout(() => {
         res.send(data);
     }, time || 1000);
@@ -13,16 +15,12 @@ const resHandler = (data: any, time?: number) => (req, res) => {
 
 export default {
     // 支持值为 Object 和 Array
-    'GET /api/users': { users: mock([]) },
+    'GET /api/users': resHandler({ users: mock([]) }),
 
     // GET 可忽略
-    '/api/users/1': { id: 1 },
+    '/api/users/1': resHandler({ id: 1 }),
 
-    'POST /api/users/create': (req, res) => {
-        // 添加跨域请求头
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.end('ok');
-    },
+    'POST /api/users/create': resHandler('ok'),
 
     'GET /weixin/xj/oilLowerPrice': resHandler(
         mock({

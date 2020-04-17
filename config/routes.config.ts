@@ -15,5 +15,10 @@ export default [
                 component: '@/pages/404'
             }
         ]
+    },
+    {
+        title: '出错了',
+        path: '*',
+        component: '@/pages/404'
     }
 ];

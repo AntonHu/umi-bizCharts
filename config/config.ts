@@ -6,6 +6,7 @@ import routesConfig from './routes.config';
 const config = defineConfig({
     title: '四项指标系统',
     hash: true, // css js 文件加hash
+    history: { type: 'hash' },
     routes: routesConfig,
     autoprefixer: {
         browsers: ['> 1%', 'last 2 versions', 'not ie <= 10']
@@ -24,15 +25,13 @@ const config = defineConfig({
         type: 'none'
     },
     // 如果是build打包操作，拆分chunks
-    ...(IF_BUILD
-        ? {
-              dynamicImport: {
-                  // 按需加载 以loading为初始页面
-                  loading: '@/components/Loading'
-              },
-              chunks: [CHUNK_NAME, 'umi']
-          }
-        : {}),
+    ...(IF_BUILD && {
+        dynamicImport: {
+            // 按需加载 以loading为初始页面
+            loading: '@/components/Loading'
+        },
+        chunks: [CHUNK_NAME, 'umi']
+    }),
     chainWebpack: webpackConfig
 });
 

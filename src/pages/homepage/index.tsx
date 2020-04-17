@@ -1,4 +1,5 @@
 import React from 'react';
+import { history } from 'umi';
 import { observer, inject } from 'mobx-react';
 import { UIStore } from '@/store/UI';
 import { OilStore } from '@/store/Oil';
@@ -23,12 +24,16 @@ class Index extends React.Component<IIndexProps> {
         console.log(result);
         uiStore.toggleLoading();
     };
+    goToPage = () => {
+        history.push('/goto');
+    };
 
     render() {
         const { oilStore } = this.props;
         return (
             <div>
                 <h1 className={styles.title}>Page index</h1>
+                <Button onClick={this.goToPage}>goTo</Button>
                 <Button onClick={this.initData}>test</Button>
                 {oilStore.priceList.map(item => (
                     <div key={item.f_item_name}>{item.f_item_name}</div>
