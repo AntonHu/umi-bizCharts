@@ -1,6 +1,7 @@
 import { defineConfig } from 'umi';
 import routesConfig from './routes.config';
 
+// defineConfig 可以让 config 在编辑时有提示信息
 const config = defineConfig({
     title: '四项指标系统',
     hash: true, // css js 文件加hash

@@ -27,13 +27,27 @@ class BasicLayout extends React.Component<IProps> {
     render() {
         const { uiStore } = this.props;
         const layoutContentDom = (
-            <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-                <div
-                    className={styles.siteLayoutBackground}
-                    style={{ padding: 24, textAlign: 'center' }}
+            <Content>
+                <Header className={styles.siteLayoutBackground} style={{ padding: 0 }}>
+                    <div className={styles.headerTitle}>{this.props.uiStore.navTitle}</div>
+                </Header>
+                <Content
+                    style={{
+                        padding: '24px 16px 0',
+                        overflow: 'auto',
+                        height: 'calc(100vh - 64px)'
+                    }}
                 >
-                    {this.props.children}
-                </div>
+                    <div
+                        className={styles.siteLayoutBackground}
+                        style={{ padding: 24, textAlign: 'center' }}
+                    >
+                        {this.props.children}
+                    </div>
+                    <Footer style={{ textAlign: 'center' }}>
+                        Ant Design ©2018 Created by Ant UED
+                    </Footer>
+                </Content>
             </Content>
         );
         return (
@@ -83,15 +97,7 @@ class BasicLayout extends React.Component<IProps> {
                     </Menu>
                 </Sider>
                 <Layout className="site-layout" style={{ marginLeft: 200 }}>
-                    <Header className={styles.siteLayoutBackground} style={{ padding: 0 }}>
-                        <div className={styles.headerTitle}>{this.props.uiStore.navTitle}</div>
-                    </Header>
-                    <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-                        {Loading({ ifShow: uiStore.ifLoading, children: layoutContentDom })}
-                    </Content>
-                    <Footer style={{ textAlign: 'center' }}>
-                        Ant Design ©2018 Created by Ant UED
-                    </Footer>
+                    {Loading({ ifShow: uiStore.ifLoading, children: layoutContentDom })}
                 </Layout>
             </Layout>
         );

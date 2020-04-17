@@ -20,19 +20,19 @@ export class UIStore {
     }; // 当前展示页面的菜单对象
 
     @action
-    toggleLoading() {
+    toggleLoading = () => {
         this.ifLoading = !this.ifLoading;
-    }
+    };
 
     @action
-    setTitle(title: string) {
+    setTitle = (title: string) => {
         this.navTitle = title;
-    }
+    };
 
     @action
-    setMenu(menuItem: IMenuItem) {
+    setMenu = (menuItem: IMenuItem) => {
         this.activeMenu = menuItem;
-    }
+    };
 }
 
 const uiStore = new UIStore();

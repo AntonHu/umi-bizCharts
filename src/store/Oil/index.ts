@@ -18,7 +18,7 @@ export class OilStore {
      * 获取汽油最低价
      */
     @action
-    async getOilPrice(): Promise<IResponse> {
+    getOilPrice = async (): Promise<IResponse> => {
         try {
             const response = await get(`${serverUrl}weixin/xj/oilLowerPrice`);
             response &&
@@ -30,7 +30,7 @@ export class OilStore {
         } catch (e) {
             return e;
         }
-    }
+    };
 }
 
 const oilStore = new OilStore();

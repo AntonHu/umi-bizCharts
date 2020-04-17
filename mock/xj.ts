@@ -23,7 +23,7 @@ export default {
         mock({
             status: 1,
             info: 'success',
-            'data|10': [{ f_item_name: '@city', 'f_city_price|1-100': 50, 'f_store_price|0-2': 1 }]
+            'data|50': [{ f_item_name: '@city', 'f_city_price|1-100': 50, 'f_store_price|0-2': 1 }]
         }),
         500
     )
