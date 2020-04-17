@@ -7,3 +7,5 @@ package.json
 .umi-production
 .umi-test
 node_modules
+devBuild
+prodBuild

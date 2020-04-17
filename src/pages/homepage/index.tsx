@@ -17,7 +17,6 @@ class Index extends React.Component<IIndexProps> {
         this.initData();
     }
     initData = async () => {
-        console.log(process.env);
         const { uiStore, oilStore } = this.props;
         uiStore.toggleLoading();
         const result = await oilStore.getOilPrice();

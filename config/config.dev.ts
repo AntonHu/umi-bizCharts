@@ -17,5 +17,9 @@ export default {
     },
     devtool: 'source-map',
     outputPath: './devBuild',
-    headScripts: ['https://source.1kmxc.com/static-web-new/cdn/eruda/1.5.8/eruda.min.js']
+    headScripts: [
+        'https://source.1kmxc.com/static-web-new/cdn/eruda/1.5.8/eruda.min.js',
+        // url 中含有 eruda=true 才加载 eruda
+        "(function(){if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;eruda.init();})()"
+    ]
 };

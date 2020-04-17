@@ -14,15 +14,15 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js?(x)}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
     "*.{css,less}": [
       "prettier --write"
     ],
+    "*.{js?(x)}": [
+      "eslint --fix --cache",
+      "prettier --write"
+    ],
     "*.ts?(x)": [
-      "eslint --fix",
+      "eslint --fix --cache",
       "prettier --parser=typescript --write"
     ]
   },
