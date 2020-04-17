@@ -113,7 +113,7 @@ request.interceptors.request.use((url, options) => {
 });
 
 export const get = async (url: string, data: object = {}): Promise<IResponse> => {
-    const result = await request('/weixin/xj/oilLowerPrice', {
+    const result = await request(url, {
         method: 'GET',
         params: data,
         headers: {

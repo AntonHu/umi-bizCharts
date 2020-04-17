@@ -263,7 +263,14 @@ Umi 里集成了 EsLint + Prettier + Lint-Staged + Yorkie，分别各司其职�
 > 
 > **配置**：.prettierrc.js Prettier配置 .prettierignore Prettier忽略配置
 > 
-> **使用**：git commit 操作前会对代码进行 Eslint 检查，不通过则拒绝本次 commit
+> **使用**：
+> 
+> git commit 操作前会对代码进行 Eslint 检查，不通过则拒绝本次 commit
+> 
+> 通过命令行，主动对整个项目的格式进行整理
+> ```bash
+> $ npm run prettier
+> ```
 
 **Lint-Staged**
 > 优化代码检查，从 git 本地缓存里比对文件，筛选出有变化的文件进行eslint prettier操作
@@ -278,6 +285,27 @@ Umi 里集成了 EsLint + Prettier + Lint-Staged + Yorkie，分别各司其职�
 > **配置**：在 package.json 中配置 gitHooks 属性，可前往查看参考
 > 
 > **使用**：获取git commit事件，进行 pre-commit 操作
+
+#### 5. Mock
+使用 Mock 可以在本地模拟接口进行联调测试，Umi内置了mock的配置，不需要另外启动服务，只需要在 config 中配置是否启用：
+```ts
+// mock配置示例 config.ts
+// mock 只允许两种类型 Object | false
+// false 表示关闭mock功能 Object 表示开启
+const MOCK: Record | false = {};
+
+// 根据 mock 是否开启，切换接口地址
+const MOCK_API = `http://localhost:${process.env.PORT}/`;
+
+const config = {
+    mock: MOCK,
+    define: {
+        APP_CONFIG: {
+            APP_SERVICE: (MOCK && MOCK_API) || 'https://api-test.baidu.com/appservice/'
+        }
+    }
+}
+```
 
 ## 提示
 1. tsx的书写建议，使用 ES6箭头函数 书写组件函数，这样可以省略 this 的 bind 操作，同时 this 的指向也更清晰：

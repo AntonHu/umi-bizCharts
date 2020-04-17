@@ -1,8 +1,11 @@
+const MOCK: Record<string, string> | false = {}; // mock=false 则关闭mock功能 mock=Object 则开启mock功能
+const MOCK_API = `http://localhost:${process.env.PORT}/`;
 export default {
+    mock: MOCK,
     define: {
         APP_CONFIG: {
             APPID_QP: 'wx525c1aa33476c7d9', //壳牌华北小程序id
-            APP_SERVICE: 'https://api-test.1kmxc.com/appservice/',
+            APP_SERVICE: (MOCK && MOCK_API) || 'https://api-test.1kmxc.com/appservice/',
             WECHAT2_APP_URL: 'https://wechat-test.1kmxc.com/',
             STATIC_URL: 'https://source.1kmxc.com/static-web-new/',
             HOME_STATIC: 'https://home-static.1kmxc.com/', //本地服务器静态文件目录
