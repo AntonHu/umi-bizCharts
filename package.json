@@ -3,8 +3,8 @@
   "scripts": {
     "start:dev": "UMI_ENV=dev umi dev",
     "start:prod": "UMI_ENV=prod umi dev ",
-    "build:dev": "UMI_ENV=dev umi build",
-    "build:prod": "UMI_ENV=prod umi build ",
+    "build:dev": "UMI_ENV=dev BUILD_OPTION=true umi build",
+    "build:prod": "UMI_ENV=prod BUILD_OPTION=true umi build ",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less}'",
     "test": "umi-test",
@@ -18,11 +18,11 @@
       "prettier --write"
     ],
     "*.{js?(x)}": [
-      "eslint --fix --cache",
+      "eslint --fix",
       "prettier --write"
     ],
     "*.ts?(x)": [
-      "eslint --fix --cache",
+      "eslint --fix",
       "prettier --parser=typescript --write"
     ]
   },

@@ -1,4 +1,5 @@
 import { defineConfig } from 'umi';
+import webpackConfig, { IF_BUILD, CHUNK_NAME } from './webpack.config';
 import routesConfig from './routes.config';
 
 // defineConfig 可以让 config 在编辑时有提示信息
@@ -22,10 +23,17 @@ const config = defineConfig({
         // none 只编译 es5-imcompatible-versions 里声明的依赖
         type: 'none'
     },
-    dynamicImport: {
-        // 按需加载 以loading为初始页面
-        loading: '@/components/Loading'
-    }
+    // 如果是build打包操作，拆分chunks
+    ...(IF_BUILD
+        ? {
+              dynamicImport: {
+                  // 按需加载 以loading为初始页面
+                  loading: '@/components/Loading'
+              },
+              chunks: [CHUNK_NAME, 'umi']
+          }
+        : {}),
+    chainWebpack: webpackConfig
 });
 
 export default config;
