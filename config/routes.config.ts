@@ -5,7 +5,7 @@ export default [
         component: '@/layouts',
         routes: [
             {
-                title: '主页',
+                title: '统计看板',
                 path: '/',
                 component: '@/pages/homepage'
             },
@@ -15,10 +15,5 @@ export default [
                 component: '@/pages/404'
             }
         ]
-    },
-    {
-        title: '出错了',
-        path: '*',
-        component: '@/pages/404'
     }
 ];
