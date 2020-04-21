@@ -30,6 +30,8 @@ module.exports = {
         useJSXTextNode: true
     },
     rules: {
+        'react/no-string-refs': 'off', // 允许使用 ref
+        'react/no-find-dom-node': 'off', // 允许使用 findDOMNode
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/camelcase': 'off',

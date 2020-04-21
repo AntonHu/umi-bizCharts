@@ -1,26 +1,49 @@
+/*
+ * @文件描述: 菜单组件
+ * @作者: Anton
+ * @Date: 2020-04-17 19:29:13
+ * @LastEditors: Anton
+ * @LastEditTime: 2020-04-21 19:53:14
+ */
 import React from 'react';
+import { Link } from 'umi';
+import { UIStore } from '@/store/UI';
+import Routes, { IRouteItem } from '../../../config/routes.config';
 import { Menu } from 'antd';
 import styles from './MenuList.less';
 
-interface IMenuItem {
-    key: number | string;
-    icon: React.ReactNode;
-    menuName: string;
-}
-
 interface IProps {
-    menuList: Array<IMenuItem>;
+    uiStore: UIStore;
 }
 
-class MenuItem extends React.Component<IProps> {
+interface IState {
+    menuList: Array<IRouteItem>;
+}
+
+class MenuItem extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
+        super(props);
+        this.state = {
+            menuList: []
+        };
+    }
+
+    componentDidMount() {
+        const { routes } = Routes[0];
+        // 筛选路由，有 menuName 属性的路由才是菜单项
+        this.setState({ menuList: routes.filter((item: IRouteItem) => item.menuName) });
+    }
+
     render() {
-        const { menuList } = this.props;
+        const { uiStore } = this.props;
         return (
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
-                {menuList.map(item => (
+            <Menu theme="dark" mode="inline" selectedKeys={[uiStore.activeMenuKey]}>
+                {this.state.menuList.map(item => (
                     <Menu.Item key={item.key}>
-                        {item.icon}
-                        <span className={styles.menuName}>{item.menuName}</span>
+                        <Link to={item.path}>
+                            {item.icon}
+                            <span className={styles.menuName}>{item.menuName}</span>
+                        </Link>
                     </Menu.Item>
                 ))}
             </Menu>

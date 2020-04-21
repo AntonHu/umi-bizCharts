@@ -1,23 +1,21 @@
+/*
+ * @文件描述:
+ * @作者: Anton
+ * @Date: 2020-04-17 12:01:06
+ * @LastEditors: Anton
+ * @LastEditTime: 2020-04-20 17:49:34
+ */
 import { action, observable } from 'mobx';
-
-/** 菜单对象 */
-export interface IMenuItem {
-    name: string; // 菜单名称
-    index: number; // 菜单index
-}
 
 export class UIStore {
     @observable
-    navTitle = '主页'; // 导航标题
+    navTitle = '统计看板'; // 导航标题
 
     @observable
     ifLoading = false; // 是否展示loading
 
     @observable
-    activeMenu: IMenuItem = {
-        name: '主页',
-        index: 0
-    }; // 当前展示页面的菜单对象
+    activeMenuKey = '0'; // 当前展示页面的菜单索引
 
     @action
     toggleLoading = () => {
@@ -30,8 +28,8 @@ export class UIStore {
     };
 
     @action
-    setMenu = (menuItem: IMenuItem) => {
-        this.activeMenu = menuItem;
+    setMenu = (key: string) => {
+        this.activeMenuKey = key;
     };
 }
 
