@@ -69,6 +69,8 @@ $ serve prodBuild
         ├── constant.ts ------ 常量尽量都写在这里，例如TOKEN，SESSION，OPENID
         ├── methods.ts ------- 常用的方法类
         └── request.ts ------- 通用请求的封装
+    ├── styles --------------- 常用样式
+        └── common.less ------ 通用样式
     ├── app.tsx -------------- 项目运行时处理，可以理解为入口文件
     └── global.less ---------- 全局样式，无需配置，umi自动引入
 ├── .editorconfig ------------ 所有文件的编写风格规则，eslint只针对js相关文件
