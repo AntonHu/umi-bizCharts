@@ -3,7 +3,7 @@
  * @作者: Anton
  * @Date: 2020-04-17 19:28:36
  * @LastEditors: Anton
- * @LastEditTime: 2020-04-20 16:16:14
+ * @LastEditTime: 2020-04-22 13:39:02
  */
 import { defineConfig } from 'umi';
 import webpackConfig, { IF_BUILD, CHUNK_NAME } from './webpack.config';

@@ -1,3 +1,10 @@
+/*
+ * @文件描述: 运行时配置 也可认为是入口文件
+ * @作者: Anton
+ * @Date: 2020-04-21 19:55:42
+ * @LastEditors: Anton
+ * @LastEditTime: 2020-04-23 18:12:01
+ */
 import { history } from 'umi';
 import React from 'react';
 import Routes, { IRouteItem } from '../config/routes.config';
@@ -35,11 +42,12 @@ export function rootContainer(container: React.ReactNode) {
  * 路由变化处理
  * @param {*} { location, routes, action }
  */
-export function onRouteChange({ location }: { location: Record<string, string | Record<string, string>> }) {
+export function onRouteChange({ location }: { location: Record<string, string> }) {
     // 设置菜单选中项和header标题
     if (location.pathname === '/') {
         // 如果是根路由，直接设置菜单选中1
         uiStore.setMenu('1');
+        uiStore.setTitle('看板');
         return;
     }
     const result: Array<IRouteItem> = Routes[0].routes.filter(item => {
@@ -52,7 +60,7 @@ export function onRouteChange({ location }: { location: Record<string, string | 
         uiStore.setTitle('出错了');
     } else {
         // 有效路由设置
-        uiStore.setMenu(result[0].key);
-        uiStore.setTitle(result[0].title);
+        uiStore.setMenu(result[0].key || '1');
+        uiStore.setTitle(result[0].title || '');
     }
 }

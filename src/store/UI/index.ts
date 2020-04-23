@@ -3,13 +3,13 @@
  * @作者: Anton
  * @Date: 2020-04-17 12:01:06
  * @LastEditors: Anton
- * @LastEditTime: 2020-04-20 17:49:34
+ * @LastEditTime: 2020-04-23 18:12:10
  */
 import { action, observable } from 'mobx';
 
 export class UIStore {
     @observable
-    navTitle = '统计看板'; // 导航标题
+    navTitle = '看板'; // 导航标题
 
     @observable
     ifLoading = false; // 是否展示loading

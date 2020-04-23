@@ -1,49 +1,30 @@
 /*
- * @文件描述: 复合图表组件 支持折线、柱状、面积、点图的组合
+ * @文件描述: 饼图 环形图组件
  * @作者: Anton
- * @Date: 2020-04-20 18:11:58
+ * @Date: 2020-04-22 14:18:53
  * @LastEditors: Anton
- * @LastEditTime: 2020-04-23 15:42:23
+ * @LastEditTime: 2020-04-23 15:44:57
  */
 import React, { ReactText } from 'react';
 import { findDOMNode } from 'react-dom';
-import { Chart, Geom, Tooltip } from 'bizcharts';
+import { Chart, Geom, Tooltip, Coord } from 'bizcharts';
 import useCustTooltip from 'bx-tooltip';
+import DataSet from '@antv/data-set';
 import styles from './index.less';
 
-// 图表类型限定
-export enum GEOM_TYPE {
-    LINE = 'line', // 折线图
-    LINE_STACK = 'lineStack', // 层叠折线图
-    INTERVAL = 'interval', // 区间图
-    INTERVAL_STACK = 'intervalStack', // 层叠区间图
-    POINT = 'point', // 点图
-    POINT_STACK = 'pointStack', // 层叠点图
-    AREA = 'area', // 面积图
-    AREA_STACK = 'areaStack' // 层叠面积图
-}
-
-// 图形配置项 例如多折线，则该对象为其中一条的配置，且至少需要一条折线的配置
+// 一个item代表一个类型，针对类型进行分组计算百分比，可以配置类型的字段名 显示的标题名 颜色
 export interface IConfigItem {
     typeKey: string; // 字段名
     typeName: string; // 名称
     color: string; // 颜色
 }
 
-// 图表对象
-export interface IGeom {
-    type: GEOM_TYPE; // 图表类型
-    size?: number; // 折线图 线宽
-    adjust?: string; // 调整 例如使层叠分组散开
-    configList: Array<IConfigItem>; // 配置列表
-}
-
 interface IProps {
     ifResize: boolean; // 当窗口尺寸变化，取反该值来重新设置图表的高度
     data: Array<Record<string, any>>;
-    xKeyName: string; // 横坐标字段名称
-    yKeyName: string; // 纵坐标字段名称
-    geomList: Array<IGeom>; // geom列表
+    configList: Array<IConfigItem>; // 配置列表
+    radius?: number; // 设置圆的半径，相对值，0 至 1 范围
+    innerRadius?: number; // 绘制环图时，设置内部空心半径，相对值，0 至 1 范围
     padding?:
         | string
         | number
@@ -61,12 +42,12 @@ interface IProps {
 
 interface IState {
     height: number; // chart高度
-    geomData: Array<any>; // 整理后的data
+    geomData: any; // 最终放在饼图展示的百分比数据
 }
 
 const REF_NAME = 'chartContainer'; // 通过该ref名称查找到图表的最外层 dom节点，从而获取高度
 
-class CompoundChart extends React.Component<IProps, IState> {
+class PieChart extends React.Component<IProps, IState> {
     private chartContainer: Element | Text | null = null; // 图表的最外层 dom节点
 
     constructor(props: IProps) {
@@ -102,22 +83,34 @@ class CompoundChart extends React.Component<IProps, IState> {
     recombineData = () => {
         try {
             const newData: Array<Record<string, any>> = [];
-            const { data, xKeyName, yKeyName, geomList } = this.props;
+            const { data, configList } = this.props;
             data.forEach(dataItem =>
                 // 遍历data进行数据重组
-                geomList.forEach(typeItem =>
-                    // 对每一种图表类型进行处理
-                    typeItem.configList.forEach(configItem => {
-                        // 对每一个图形进行处理
-                        newData.push({
-                            type: configItem.typeName,
-                            [xKeyName]: dataItem[xKeyName],
-                            [yKeyName]: dataItem[configItem.typeKey]
-                        });
-                    })
-                )
+                configList.forEach(configItem => {
+                    // 将dataItem 根据config 拆分
+                    newData.push({
+                        type: configItem.typeName,
+                        value: dataItem[configItem.typeKey]
+                    });
+                })
             );
-            this.setState({ geomData: newData });
+            this.percentHandler(newData);
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    // 将gemoData整理成percentData，计算 percent
+    percentHandler = (data: Array<Record<string, any>>) => {
+        try {
+            const dv = new DataSet.View();
+            dv.source(data).transform({
+                type: 'percent', // 类型 百分比
+                dimension: 'type', // 以 type 进行分类
+                field: 'value', // 统计结果，将 type 相同的数据的 value累加得到
+                as: 'percent' // 结果存储在 percent 字段
+            });
+            this.setState({ geomData: dv });
         } catch (e) {
             console.log(e);
         }
@@ -126,9 +119,8 @@ class CompoundChart extends React.Component<IProps, IState> {
     render() {
         const {
             scale,
-            xKeyName,
-            yKeyName,
-            geomList,
+            radius,
+            innerRadius,
             padding,
             className,
             chartChildren,
@@ -138,11 +130,19 @@ class CompoundChart extends React.Component<IProps, IState> {
         } = this.props;
         const { height, geomData } = this.state;
         const [BxChart, CustTooltip] = useCustTooltip.create(Chart, Tooltip);
+        const cols = {
+            percent: {
+                formatter: (val: number) => {
+                    const percent = (val * 100).toFixed(2) + '%';
+                    return percent;
+                }
+            }
+        };
         const chartProps = {
             height,
             ref: REF_NAME,
             className: `${styles.chartContainer} ${className ? className : ''}`,
-            scale: scale,
+            scale: scale || cols,
             data: geomData,
             forceFit: true,
             placeholder: true, // 源码bug placeholder必须为true 才会显示默认的empty样式，且自定义jsx会报递归错误
@@ -150,38 +150,18 @@ class CompoundChart extends React.Component<IProps, IState> {
         };
         const chartContent = (
             <React.Fragment>
-                {geomList.map((geomItem, index) => (
-                    <Geom
-                        key={index}
-                        type={geomItem.type}
-                        // shape="smooth"
-                        size={geomItem.size}
-                        adjust={geomItem.adjust}
-                        position={`${xKeyName}*${yKeyName}`}
-                        color={['type', geomItem.configList.map(configItem => configItem.color)]}
-                    >
-                        {geomChildren}
-                    </Geom>
-                ))}
-                {showToolTip ? setToolTip ? <CustTooltip enterable>{setToolTip}</CustTooltip> : <Tooltip /> : null}
+                <Coord type="theta" radius={radius || 1} innerRadius={innerRadius || 0} />
+                <Geom type="intervalStack" position="percent" color="type">
+                    {geomChildren}
+                </Geom>
+                {showToolTip ? (
+                    setToolTip ? (
+                        <CustTooltip enterable>{setToolTip}</CustTooltip>
+                    ) : (
+                        <Tooltip showTitle={false} />
+                    )
+                ) : null}
                 {chartChildren}
-                {/* {(title, items) => {
-                    return (
-                        <div>
-                            自定义tooltip <br />
-                            title: {title}
-                            {items.map((it, idx) => (
-                                <div key={idx}>
-                                    color: {it.color}
-                                    <br />
-                                    数据: {it.point._origin.value}
-                                    <br />
-                                    <div type="primary">详细信息</div>
-                                </div>
-                            ))}
-                        </div>
-                    );
-                }} */}
             </React.Fragment>
         );
         return setToolTip ? (
@@ -192,4 +172,4 @@ class CompoundChart extends React.Component<IProps, IState> {
     }
 }
 
-export default CompoundChart;
+export default PieChart;

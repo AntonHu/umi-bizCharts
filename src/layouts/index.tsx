@@ -21,12 +21,13 @@ class BasicLayout extends React.Component<IProps> {
         const { uiStore } = this.props;
         const layoutContentDom = (
             <Content>
-                <Header className={styles.siteLayoutBackground} style={{ padding: 0 }}>
+                <Header className={styles.navHeader}>
                     <div className={styles.headerTitle}>{this.props.uiStore.navTitle}</div>
+                    <div className={styles.headerRight}>地图</div>
                 </Header>
                 <Content className={styles.container}>
                     {this.props.children}
-                    <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+                    <Footer style={{ textAlign: 'center' }}>四项指标看板系统 ©2020 Created by 驿公里</Footer>
                 </Content>
             </Content>
         );
@@ -44,7 +45,7 @@ class BasicLayout extends React.Component<IProps> {
 
                     <MenuList uiStore={this.props.uiStore} />
                 </Sider>
-                <Layout className="site-layout" style={{ marginLeft: 200 }}>
+                <Layout className="site-layout">
                     {Loading({ ifShow: uiStore.ifLoading, children: layoutContentDom })}
                 </Layout>
             </Layout>

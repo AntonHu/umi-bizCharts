@@ -1,17 +1,33 @@
+@import '../styles/common.less';
+
+@menuWidth: 65 * @vw;
+
 .logo {
     height: 32px;
     background: rgba(255, 255, 255, 0.2);
     margin: 16px;
 }
 
-.siteLayoutBackground {
+.navHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    height: 50 * @vw;
+    line-height: 50 * @vw;
     background: #fff;
-}
 
-.headerTitle {
-    margin-left: 10px;
-    font-size: 22px;
-    font-weight: bold;
+    .headerTitle {
+        margin-left: 22 * @vw;
+        color: rgba(51, 51, 51, 1);
+        font-size: 18 * @vw;
+        font-family: PingFangSC-Semibold;
+    }
+    .headerRight {
+        margin-right: 63 * @vw;
+        color: rgba(51, 51, 51, 1);
+        font-size: 18 * @vw;
+        font-family: PingFangSC-Semibold;
+    }
 }
 
 .container {
@@ -20,7 +36,24 @@
 }
 
 :global {
+    .ant-layout-sider {
+        min-width: 0 !important;
+        max-width: none !important;
+        width: @menuWidth!important;
+    }
     .ant-layout > .site-layout {
         min-height: 100vh;
+        margin-left: @menuWidth;
+    }
+    .ant-menu-item {
+        height: auto !important;
+
+        a {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding: 10 * @vw!important;
+        }
     }
 }

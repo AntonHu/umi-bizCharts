@@ -3,7 +3,7 @@
  * @作者: Anton
  * @Date: 2020-04-16 15:05:26
  * @LastEditors: Anton
- * @LastEditTime: 2020-04-20 18:44:43
+ * @LastEditTime: 2020-04-22 11:35:20
  */
 // typescript 只认识js ts的模块，其他格式的模块需要声明
 declare module '*.css';
@@ -12,6 +12,7 @@ declare module '*.png';
 
 // 按需引入bizcharts 缺少typescript的type包 需要自行声明
 declare module 'bizcharts/lib/components/TypedGeom/Line';
+declare module 'bx-tooltip';
 
 interface IAppConfig {
     APPID_QP: string; //壳牌华北小程序id

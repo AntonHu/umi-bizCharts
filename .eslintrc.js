@@ -32,11 +32,13 @@ module.exports = {
     rules: {
         'react/no-string-refs': 'off', // 允许使用 ref
         'react/no-find-dom-node': 'off', // 允许使用 findDOMNode
-        '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/interface-name-prefix': 'off',
-        '@typescript-eslint/camelcase': 'off',
+        '@typescript-eslint/explicit-function-return-type': 'off', // 允许function不声明void
+        '@typescript-eslint/interface-name-prefix': 'off', // 允许以 'I' 开头命名 interface
+        '@typescript-eslint/camelcase': 'off', // 允许不是驼峰的命名
+        '@typescript-eslint/no-explicit-any': 'off', // 允许any 太难了
+        '@typescript-eslint/no-this-alias': 'off',
         semi: [1, 'always'], // 句末需要分号
-        indent: [1, 4], // 缩进4个空格
+        // indent: [1, 4], // 缩进4个空格
         // "quotes": [1, "single"], // 请使用单引号
         'space-infix-ops': [
             1,

@@ -1,17 +1,5 @@
+import { resHandler } from './index';
 import { mock } from 'mockjs';
-
-/**
- * 响应处理
- * @param data mock数据
- * @param time 响应延时ms
- */
-const resHandler = (data: any, time?: number) => (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5000');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    setTimeout(() => {
-        res.send(data);
-    }, time || 1000);
-};
 
 export default {
     // 支持值为 Object 和 Array

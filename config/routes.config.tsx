@@ -35,16 +35,16 @@ export default [
         component: '@/layouts',
         routes: [
             {
-                title: '统计看板',
+                title: '看板',
                 path: '/',
                 component: '@/pages/homepage',
-                ...setMenuInfo('1', <UserOutlined />, '统计看板')
+                ...setMenuInfo('1', <UserOutlined />, '看板')
             },
             {
-                title: '订单分析',
+                title: '工单',
                 path: '/course',
                 component: '@/pages/homepage',
-                ...setMenuInfo('2', <VideoCameraOutlined />, '订单分析')
+                ...setMenuInfo('2', <VideoCameraOutlined />, '工单')
             },
             {
                 title: '出错了',
