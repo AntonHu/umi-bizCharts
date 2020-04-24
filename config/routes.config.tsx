@@ -41,20 +41,21 @@ export default [
         component: '@/layouts',
         routes: [
             {
-                title: '看板', // 路由名称，默认作为header组件和网页title的标题
+                exact: true,
+                title: '统计看板', // 路由名称，默认作为header组件和网页title的标题
                 path: '/',
                 component: '@/pages/homepage',
                 // 只有设置了menuName才是菜单项，否则就只是路由，例如404页面就不需要
-                ...setMenuInfo('1', <UserOutlined />, '看板')
+                ...setMenuInfo('1', <UserOutlined />, '我的')
             },
             {
-                title: '工单',
-                path: '/course',
-                component: '@/pages/homepage',
+                title: '订单分析',
+                path: '/analysis',
+                component: '@/pages/analysis',
                 ...setMenuInfo('2', <VideoCameraOutlined />, '工单')
             },
             {
-                title: '出错了',
+                title: '未找到页面',
                 path: '*',
                 component: '@/pages/404'
             }

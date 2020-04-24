@@ -10,25 +10,17 @@ interface IProps {
     uiStore: UIStore;
 }
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider } = Layout;
 
 @inject('uiStore')
 @observer
 class BasicLayout extends React.Component<IProps> {
-    state = {};
-
     render() {
         const { uiStore } = this.props;
         const layoutContentDom = (
             <Content>
-                <Header className={styles.navHeader}>
-                    <div className={styles.headerTitle}>{this.props.uiStore.navTitle}</div>
-                    <div className={styles.headerRight}>地图</div>
-                </Header>
-                <Content className={styles.container}>
-                    {this.props.children}
-                    <Footer style={{ textAlign: 'center' }}>四项指标看板系统 ©2020 Created by 驿公里</Footer>
-                </Content>
+                {this.props.children}
+                <Footer style={{ textAlign: 'center' }}>四项指标看板系统 ©2020 Created by 驿公里</Footer>
             </Content>
         );
         return (
@@ -42,8 +34,7 @@ class BasicLayout extends React.Component<IProps> {
                     }}
                 >
                     <div className={styles.logo} />
-
-                    <MenuList uiStore={this.props.uiStore} />
+                    <MenuList activeMenuKey={this.props.uiStore.activeMenuKey} />
                 </Sider>
                 <Layout className="site-layout">
                     {Loading({ ifShow: uiStore.ifLoading, children: layoutContentDom })}

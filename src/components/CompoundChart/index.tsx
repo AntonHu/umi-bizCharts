@@ -3,10 +3,9 @@
  * @作者: Anton
  * @Date: 2020-04-20 18:11:58
  * @LastEditors: Anton
- * @LastEditTime: 2020-04-24 12:01:57
+ * @LastEditTime: 2020-04-24 20:51:03
  */
 import React, { ReactText } from 'react';
-import { findDOMNode } from 'react-dom';
 import { Chart, Geom, Tooltip } from 'bizcharts';
 import useCustTooltip from 'bx-tooltip';
 import styles from './index.less';
@@ -39,7 +38,7 @@ export interface IGeom {
 }
 
 interface IProps {
-    ifResize: boolean; // 当窗口尺寸变化，取反该值来重新设置图表的高度
+    parentDom: HTMLElement | null; // 为了动态变化高度，需要获取父节点的dom来计算
     data: Array<Record<string, any>>;
     xKeyName: string; // 横坐标字段名称
     yKeyName: string; // 纵坐标字段名称
@@ -61,43 +60,22 @@ interface IProps {
 }
 
 interface IState {
-    height: number; // chart高度
     geomData: Array<any>; // 整理后的data
 }
 
-const REF_NAME = 'chartContainer'; // 通过该ref名称查找到图表的最外层 dom节点，从而获取高度
-
 class CompoundChart extends React.Component<IProps, IState> {
-    private chartContainer: Element | Text | null = null; // 图表的最外层 dom节点
-
     constructor(props: IProps) {
         super(props);
         this.state = {
-            height: 0,
             geomData: []
         };
-    }
-
-    componentDidMount() {
-        this.chartContainer = findDOMNode(this.refs[REF_NAME]);
-        this.setChartHeight();
     }
 
     componentDidUpdate(preProps: IProps) {
         if (preProps.data !== this.props.data) {
             this.recombineData();
         }
-        if (preProps.ifResize !== this.props.ifResize) {
-            this.setChartHeight();
-        }
     }
-
-    setChartHeight = () => {
-        const _this = this;
-        _this.setState({
-            height: _this.chartContainer?.clientHeight || 0
-        });
-    };
 
     // 整理数据，使其变成 [{ type: [以某个字段进行分类], [xKeyName]: [横坐标值], [yKeyName]: [纵坐标值] }] 的数据类型
     recombineData = () => {
@@ -126,6 +104,7 @@ class CompoundChart extends React.Component<IProps, IState> {
 
     render() {
         const {
+            parentDom,
             scale,
             xKeyName,
             yKeyName,
@@ -137,11 +116,10 @@ class CompoundChart extends React.Component<IProps, IState> {
             showToolTip,
             setToolTip
         } = this.props;
-        const { height, geomData } = this.state;
-        const [BxChart, CustTooltip] = useCustTooltip.create(Chart, Tooltip);
+        const { geomData } = this.state;
+        console.log(parentDom?.clientHeight);
         const chartProps = {
-            height,
-            ref: REF_NAME,
+            height: parentDom?.clientHeight || 0,
             className: `${styles.chartContainer} ${className ? className : ''}`,
             scale: scale,
             data: geomData,
@@ -149,6 +127,7 @@ class CompoundChart extends React.Component<IProps, IState> {
             placeholder: true, // 源码bug placeholder必须为true 才会显示默认的empty样式，且自定义jsx会报递归错误
             padding: padding || 'auto'
         };
+        const [BxChart, CustTooltip] = useCustTooltip.create(Chart, Tooltip);
         const chartContent = (
             <React.Fragment>
                 {geomList.map((geomItem, index) => (

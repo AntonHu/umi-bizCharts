@@ -3,7 +3,7 @@
  * @作者: Anton
  * @Date: 2020-04-21 19:55:42
  * @LastEditors: Anton
- * @LastEditTime: 2020-04-23 18:12:01
+ * @LastEditTime: 2020-04-24 16:06:57
  */
 import { history } from 'umi';
 import React from 'react';
@@ -46,18 +46,19 @@ export function onRouteChange({ location }: { location: Record<string, string> }
     // 设置菜单选中项和header标题
     if (location.pathname === '/') {
         // 如果是根路由，直接设置菜单选中1
-        uiStore.setMenu('1');
-        uiStore.setTitle('看板');
+        uiStore.setMenu(Routes[0].routes[0].key);
+        uiStore.setTitle(Routes[0].routes[0].title);
         return;
     }
+    const regStr = new RegExp('\\' + location.pathname + '(\\/|$)');
     const result: Array<IRouteItem> = Routes[0].routes.filter(item => {
         // 查找path匹配的路由配置，且排除根路由
-        return item.path !== '/' && location.pathname?.indexOf(item.path) !== -1;
+        return item.path !== '/' && regStr.test(item.path);
     });
     if (result.length === 0) {
         // 无效路由设置
         uiStore.setMenu('0');
-        uiStore.setTitle('出错了');
+        uiStore.setTitle('未找到页面');
     } else {
         // 有效路由设置
         uiStore.setMenu(result[0].key || '1');

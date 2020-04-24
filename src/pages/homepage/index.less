@@ -1,23 +1,35 @@
 @import '../../styles/common.less';
 
-:global {
-    .diy-g2-legend {
-        width: 100% !important;
-        max-width: none !important;
+@rightWidth: 345 * @vw;
+
+.navHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    height: 50 * @vw;
+    line-height: 50 * @vw;
+    background: #fff;
+
+    .headerTitle {
+        margin-left: 22 * @vw;
+        color: rgba(51, 51, 51, 1);
+        font-size: 18 * @vw;
+        font-family: PingFangSC-Semibold;
     }
-    .diy-legend-li {
-        display: flex !important;
-        align-items: stretch;
+    .headerRight {
+        margin-right: 63 * @vw;
+        color: rgba(51, 51, 51, 1);
+        font-size: 18 * @vw;
+        font-family: PingFangSC-Semibold;
     }
 }
 
-@rightWidth: 345 * @vw;
-
 .container {
     display: flex;
-    width: 100%;
-    height: 100%;
     padding: 26 * @vw 23 * @vw 0 33 * @vw;
+    width: 100%;
+    max-height: calc(~'100vh - 64px');
+    overflow: auto;
 }
 // 左边的模块
 .leftContainer {
@@ -41,6 +53,12 @@
             flex-direction: column;
             justify-content: space-between;
             width: 25%;
+            cursor: pointer;
+
+            canvas {
+                // 绘制出来的canvas拥有内联样式 cursor: default; 这里只能用更高级别的 !important
+                cursor: pointer !important;
+            }
         }
     }
 

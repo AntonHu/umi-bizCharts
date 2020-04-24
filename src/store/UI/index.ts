@@ -3,19 +3,20 @@
  * @作者: Anton
  * @Date: 2020-04-17 12:01:06
  * @LastEditors: Anton
- * @LastEditTime: 2020-04-23 18:12:10
+ * @LastEditTime: 2020-04-24 14:42:03
  */
 import { action, observable } from 'mobx';
+import Routes from '@/../config/routes.config';
 
 export class UIStore {
     @observable
-    navTitle = '看板'; // 导航标题
+    navTitle: string = Routes[0].routes[0].title; // 导航标题
 
     @observable
     ifLoading = false; // 是否展示loading
 
     @observable
-    activeMenuKey = '0'; // 当前展示页面的菜单索引
+    activeMenuKey: string = Routes[0].routes[0].key; // 当前展示页面的菜单索引
 
     @action
     toggleLoading = () => {

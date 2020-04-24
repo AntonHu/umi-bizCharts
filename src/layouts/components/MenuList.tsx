@@ -3,17 +3,16 @@
  * @作者: Anton
  * @Date: 2020-04-17 19:29:13
  * @LastEditors: Anton
- * @LastEditTime: 2020-04-21 19:53:14
+ * @LastEditTime: 2020-04-24 16:07:38
  */
 import React from 'react';
 import { Link } from 'umi';
-import { UIStore } from '@/store/UI';
 import Routes, { IRouteItem } from '../../../config/routes.config';
 import { Menu } from 'antd';
 import styles from './MenuList.less';
 
 interface IProps {
-    uiStore: UIStore;
+    activeMenuKey: string;
 }
 
 interface IState {
@@ -35,9 +34,9 @@ class MenuItem extends React.Component<IProps, IState> {
     }
 
     render() {
-        const { uiStore } = this.props;
+        const { activeMenuKey } = this.props;
         return (
-            <Menu theme="dark" mode="inline" selectedKeys={[uiStore.activeMenuKey]}>
+            <Menu theme="dark" mode="inline" selectedKeys={[activeMenuKey]}>
                 {this.state.menuList.map(item => (
                     <Menu.Item key={item.key}>
                         <Link to={item.path}>
