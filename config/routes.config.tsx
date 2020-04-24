@@ -26,6 +26,12 @@ export interface IRouteItem {
     menuName?: string;
 }
 
+/**
+ * 设置菜单子项信息
+ * @param {string} key 菜单项的唯一key
+ * @param {React.ReactNode} icon 菜单项的图标，暂时使用antd提供的图标组件
+ * @param {string} menuName 菜单项名称
+ */
 const setMenuInfo = (key: string, icon: React.ReactNode, menuName: string) => ({ key, icon, menuName });
 
 /** @ 代表src路径 . 代表pages路径 */
@@ -35,9 +41,10 @@ export default [
         component: '@/layouts',
         routes: [
             {
-                title: '看板',
+                title: '看板', // 路由名称，默认作为header组件和网页title的标题
                 path: '/',
                 component: '@/pages/homepage',
+                // 只有设置了menuName才是菜单项，否则就只是路由，例如404页面就不需要
                 ...setMenuInfo('1', <UserOutlined />, '看板')
             },
             {

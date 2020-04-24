@@ -3,7 +3,7 @@
  * @作者: Anton
  * @Date: 2020-04-20 18:11:58
  * @LastEditors: Anton
- * @LastEditTime: 2020-04-23 15:42:23
+ * @LastEditTime: 2020-04-24 12:01:57
  */
 import React, { ReactText } from 'react';
 import { findDOMNode } from 'react-dom';
@@ -53,10 +53,11 @@ interface IProps {
         | undefined; // 边距
     scale?: Record<string, any>; // 配置数据比例尺 坐标轴配置
     className?: string; // 类名
-    chartChildren?: React.ReactNode; // 自行增加Chart子节点 建议用来覆盖ToolTip Axis Legend
+    chartChildren?: React.ReactNode; // 自行增加Chart子节点 例如Axis Legend
     geomChildren?: React.ReactNode; // 自行增加的Geom子节点 例如Label
     showToolTip?: boolean; // 是否添加toolTip
-    setToolTip?: (title: string, items: Record<string, any>, dom?: HTMLElement) => React.ReactNode; // 自定义tooltips dom是tooltip最外层的节点
+    // 使用bx-tooltip自定义tooltips 参数 dom 是tooltip最外层的节点
+    setToolTip?: (title: string, items: Record<string, any>, dom?: HTMLElement) => React.ReactNode;
 }
 
 interface IState {

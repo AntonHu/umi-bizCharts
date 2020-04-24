@@ -1,8 +1,8 @@
 # 四项指标项目
 
-> 开发栈：Umi + React + Mobx + TypeScript + Less + AntDesign
+> 开发栈：Umi + React + Mobx + TypeScript + Less + AntDesign + BizCharts
 > 
-> 辅助工具：EsLint + Prettier + Lint-Staged + Yorkie + Mock
+> 辅助工具：EsLint(js检查) + Prettier(风格检查) + Lint-Staged(lint缓存管理) + Yorkie(提供git钩子) + Mock(接口模拟)
 
 ## 启动项目
 
@@ -65,12 +65,12 @@ $ serve prodBuild
         └── documents.ejs ---- html模版，umi自动根据该模版输出html文件，例如meta,title,link,script等可以在这里编写
     ├── store ---------------- 数据模型 本项目使用mobx做数据管理
         └── index.ts --------- 完整的store导出文件
+    ├── styles --------------- 常用样式
+        └── common.less ------ 通用样式
     ├── utils ---------------- 开发常用工具类
         ├── constant.ts ------ 常量尽量都写在这里，例如TOKEN，SESSION，OPENID
         ├── methods.ts ------- 常用的方法类
         └── request.ts ------- 通用请求的封装
-    ├── styles --------------- 常用样式
-        └── common.less ------ 通用样式
     ├── app.tsx -------------- 项目运行时处理，可以理解为入口文件
     └── global.less ---------- 全局样式，无需配置，umi自动引入
 ├── .editorconfig ------------ 所有文件的编写风格规则，eslint只针对js相关文件
@@ -86,7 +86,58 @@ $ serve prodBuild
 ├── tsconfig.json ------------ typescript规则
 └── typings.d.ts ------------- 全局声明，在这里声明的内容，可以在整个项目中被typescript识别
 ```
+
+
 ## 开发指南
+#### 1. 菜单项配置
+配置路径 **config/routes.config.ts** ，根路由的一级子路由就是菜单子项，具体如何配置请前往文件查看；
+
+菜单操作，不需要手动设置点击事件、标题、选中样式等信息，因为在 **src/app.ts** 中，监听了路由变化，自动完成了菜单的一系列操作，详情可前往查看 **onRouteChange** 方法
+
+#### 2. mock
+当前配置，如果开启mock，则接口 **APP_SERVER** 将指向本地mock，目前仅在 **config/config.dev.ts** 配置了mock，即只在开发环境开启，如要在开发环境关闭mock，可前往该文件将 **mock = false** ：
+```ts
+// config/config.dev.ts
+const MOCK: Record<string, string> | false = false; // mock=false 则关闭mock功能 mock=Object 则开启mock功能
+```
+
+#### 3. 页面权限
+**src/app.ts** 中 **render** 方法可以在页面渲染前做一些处理，例如判断登录状态，判断用户权限，并进行下一步操作
+
+#### 4. 静态资源
+静态资源可以都放到 **public** 目录下，打包时会自动copy到打包路径中
+
+#### 5. 箭头函数
+tsx的书写建议，使用 ES6箭头函数 书写组件函数，这样可以省略 this 的 bind 操作，同时 this 的指向也更清晰：
+```tsx
+// tsx书写建议示例 test.tsx
+class Test extends React.Component {
+
+    // 不建议
+    add_bad() {}
+    set_bad(value) {}
+
+    // 建议
+    add_good = () => {}
+    set_good = value => () => {}
+
+    render() {
+        return (
+            <div>
+                {/* 不建议 */}
+                <div onClick={this.add_bad.bind(this)}>添加 不建议</div>
+                <div onClick={this.set_bad.bind(1, this)}>设置 不建议</div>
+
+                {/* 建议 */}
+                <div onClick={this.add_good}>添加 建议</div>
+                <div onClick={this.set_good(1)}>设置 建议</div>
+            </div>
+        );
+    }
+}
+```
+
+## 项目指南
 
 #### 1. 打包配置：
 
@@ -247,11 +298,16 @@ Umi 里集成了 EsLint + Prettier + Lint-Staged + Yorkie，分别各司其职�
 > 
 > **使用**：
 > 
-> git commit 操作前会对代码进行 Eslint 检查，不通过则拒绝本次 commit
+> git commit 时 Eslint 检查通过后，再使用prettier进行格式的自动调整
 > 
 > 通过命令行，主动对整个项目的格式进行整理
 > ```bash
 > $ npm run prettier
+> ```
+> 
+> 通过命令行，主动对单个文件进行整理
+> ```bash
+> $ npm run prettierSingle 文件路径
 > ```
 
 **Lint-Staged**
@@ -274,7 +330,7 @@ Umi 里集成了 EsLint + Prettier + Lint-Staged + Yorkie，分别各司其职�
 // mock配置示例 config.ts
 // mock 只允许两种类型 Object | false
 // false 表示关闭mock功能 Object 表示开启
-const MOCK: Record | false = {};
+const MOCK: Object | false = {};
 
 // 根据 mock 是否开启，切换接口地址
 const MOCK_API = `http://localhost:${process.env.PORT}/`;
@@ -285,36 +341,6 @@ const config = {
         APP_CONFIG: {
             APP_SERVICE: (MOCK && MOCK_API) || 'https://api-test.baidu.com/appservice/'
         }
-    }
-}
-```
-
-## 提示
-1. tsx的书写建议，使用 ES6箭头函数 书写组件函数，这样可以省略 this 的 bind 操作，同时 this 的指向也更清晰：
-```tsx
-// tsx书写建议示例 test.tsx
-class Test extends React.Component {
-
-    // 不建议
-    add_bad() {}
-    set_bad(value) {}
-
-    // 建议
-    add_good = () => {}
-    set_good = value => () => {}
-
-    render() {
-        return (
-            <div>
-                {/* 不建议 */}
-                <div onClick={this.add_bad.bind(this)}>添加 不建议</div>
-                <div onClick={this.set_bad.bind(1, this)}>设置 不建议</div>
-
-                {/* 建议 */}
-                <div onClick={this.add_good}>添加 建议</div>
-                <div onClick={this.set_good(1)}>设置 建议</div>
-            </div>
-        );
     }
 }
 ```
