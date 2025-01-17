@@ -1,4 +1,4 @@
-# 四项指标项目
+# 自搭Umi可视化管理后台模板应用
 
 > 开发栈：Umi + React + Mobx + TypeScript + Less + AntDesign + BizCharts
 > 
